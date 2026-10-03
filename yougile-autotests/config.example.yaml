@@ -1,0 +1,9 @@
+web_base_url: "https://ru.yougile.com"
+api_base_url: "https://yougile.com"
+email: ""
+password: ""
+company_id: ""
+token: ""
+browser: "chromium"
+headless: true
+ui_timeout_ms: 15000

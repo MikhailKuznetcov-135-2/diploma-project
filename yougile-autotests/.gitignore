@@ -1,0 +1,11 @@
+.DS_Store
+.idea/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+allure-report/
+allure-results/
+config.yaml
+test-results/
+venv/
+.venv/

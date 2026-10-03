@@ -1,0 +1,73 @@
+{
+  "login_page_seconds": [
+    3.553,
+    3.65,
+    2.958
+  ],
+  "login_page_max_seconds": 3.65,
+  "invalid_login_messages": [
+    "Пароль",
+    "Неверный e-mail или пароль",
+    "Забыли пароль?"
+  ],
+  "keyboard_focus_sequence": [
+    {
+      "tag": "INPUT",
+      "type": "email",
+      "role": null,
+      "text": ""
+    },
+    {
+      "tag": "INPUT",
+      "type": "password",
+      "role": null,
+      "text": ""
+    },
+    {
+      "tag": "IFRAME",
+      "type": null,
+      "role": null,
+      "text": ""
+    },
+    {
+      "tag": "BODY",
+      "type": null,
+      "role": null,
+      "text": "Войти:\nE-mail\nПароль\nВойти\nили\nЗабыли па"
+    },
+    {
+      "tag": "A",
+      "type": null,
+      "role": null,
+      "text": ""
+    },
+    {
+      "tag": "INPUT",
+      "type": "email",
+      "role": null,
+      "text": ""
+    },
+    {
+      "tag": "INPUT",
+      "type": "password",
+      "role": null,
+      "text": ""
+    },
+    {
+      "tag": "IFRAME",
+      "type": null,
+      "role": null,
+      "text": ""
+    },
+    {
+      "tag": "BODY",
+      "type": null,
+      "role": null,
+      "text": "Войти:\nE-mail\nПароль\nВойти\nили\nЗабыли па"
+    }
+  ],
+  "login_button_reached_by_tab": false,
+  "keyboard_login_seconds": 1.888,
+  "projects_panel_seconds": 0.031,
+  "logout_completed": true
+}

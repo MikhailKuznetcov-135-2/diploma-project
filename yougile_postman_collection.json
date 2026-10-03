@@ -1,0 +1,203 @@
+{
+  "info": {
+    "_postman_id": "8e0a7fd9-94af-4acb-99a3-07689fa14e45",
+    "name": "YouGile REST API v2 — диплом",
+    "description": "7 тест-кейсов: 5 позитивных и 2 негативных. Запрос Cleanup удаляет созданный учебный ключ и не считается тест-кейсом.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "base_url", "value": "https://yougile.com", "type": "string"},
+    {"key": "login", "value": "", "type": "string"},
+    {"key": "password", "value": "", "type": "string"},
+    {"key": "company_id", "value": "", "type": "string"},
+    {"key": "token", "value": "", "type": "string"},
+    {"key": "created_key", "value": "", "type": "string"},
+    {"key": "user_id", "value": "", "type": "string"},
+    {"key": "project_id", "value": "", "type": "string"},
+    {"key": "task_id", "value": "", "type": "string"}
+  ],
+  "item": [
+    {
+      "name": "Позитивные",
+      "item": [
+        {
+          "name": "API-001 — Получить список компаний",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{login}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{base_url}}/api-v2/auth/companies",
+            "description": "Ожидается 200 и пагинированный объект content/paging. Первый company id сохраняется."
+          },
+          "event": [{
+            "listen": "test",
+            "script": {"type": "text/javascript", "exec": [
+              "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Response has content and paging', () => {",
+              "  pm.expect(body.content).to.be.an('array');",
+              "  pm.expect(body.paging).to.be.an('object');",
+              "});",
+              "if (body.content && body.content.length > 0) {",
+              "  pm.collectionVariables.set('company_id', body.content[0].id);",
+              "}"
+            ]}
+          }]
+        },
+        {
+          "name": "API-002 — Создать API-ключ",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{login}}\",\n  \"password\": \"{{password}}\",\n  \"companyId\": \"{{company_id}}\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{base_url}}/api-v2/auth/keys",
+            "description": "Ожидается 201 и поле key. Ключ сохраняется в token и created_key."
+          },
+          "event": [{
+            "listen": "test",
+            "script": {"type": "text/javascript", "exec": [
+              "pm.test('Status code is 201', () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test('Response contains key', () => pm.expect(body.key).to.be.a('string').and.not.empty);",
+              "if (body.key) {",
+              "  pm.collectionVariables.set('token', body.key);",
+              "  pm.collectionVariables.set('created_key', body.key);",
+              "  pm.environment.set('cleanup_key', body.key);",
+              "}"
+            ]}
+          }]
+        },
+        {
+          "name": "API-003 — Получить текущего пользователя",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]},
+            "method": "GET",
+            "header": [{"key": "Accept", "value": "application/json"}],
+            "url": "{{base_url}}/api-v2/users/me",
+            "description": "Ожидается 200 и id текущего пользователя."
+          },
+          "event": [{
+            "listen": "test",
+            "script": {"type": "text/javascript", "exec": [
+              "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Response contains user id', () => pm.expect(body.id).to.be.a('string').and.not.empty);",
+              "if (body.id) pm.collectionVariables.set('user_id', body.id);"
+            ]}
+          }]
+        },
+        {
+          "name": "API-004 — Получить список проектов",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]},
+            "method": "GET",
+            "header": [{"key": "Accept", "value": "application/json"}],
+            "url": {"raw": "{{base_url}}/api-v2/projects?limit=50&offset=0", "host": ["{{base_url}}"], "path": ["api-v2", "projects"], "query": [{"key": "limit", "value": "50"}, {"key": "offset", "value": "0"}]},
+            "description": "Ожидается 200 и пагинированный список проектов."
+          },
+          "event": [{
+            "listen": "test",
+            "script": {"type": "text/javascript", "exec": [
+              "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Response has content and paging', () => { pm.expect(body.content).to.be.an('array'); pm.expect(body.paging).to.be.an('object'); });",
+              "if (body.content && body.content.length > 0) pm.collectionVariables.set('project_id', body.content[0].id);"
+            ]}
+          }]
+        },
+        {
+          "name": "API-005 — Получить список задач",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]},
+            "method": "GET",
+            "header": [{"key": "Accept", "value": "application/json"}],
+            "url": {"raw": "{{base_url}}/api-v2/tasks?limit=50&offset=0", "host": ["{{base_url}}"], "path": ["api-v2", "tasks"], "query": [{"key": "limit", "value": "50"}, {"key": "offset", "value": "0"}]},
+            "description": "Ожидается 200 и пагинированный список задач."
+          },
+          "event": [{
+            "listen": "test",
+            "script": {"type": "text/javascript", "exec": [
+              "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Response has content and paging', () => { pm.expect(body.content).to.be.an('array'); pm.expect(body.paging).to.be.an('object'); });",
+              "if (body.content && body.content.length > 0) pm.collectionVariables.set('task_id', body.content[0].id);"
+            ]}
+          }]
+        }
+      ]
+    },
+    {
+      "name": "Негативные",
+      "item": [
+        {
+          "name": "API-006 — Текущий пользователь без токена",
+          "request": {
+            "auth": {"type": "noauth"},
+            "method": "GET",
+            "header": [{"key": "Accept", "value": "application/json"}],
+            "url": "{{base_url}}/api-v2/users/me",
+            "description": "Ожидается 401 и описание ошибки."
+          },
+          "event": [{
+            "listen": "test",
+            "script": {"type": "text/javascript", "exec": [
+              "pm.test('Status code is 401', () => pm.response.to.have.status(401));",
+              "pm.test('Response contains error', () => pm.expect(pm.response.json().error).to.exist);"
+            ]}
+          }]
+        },
+        {
+          "name": "API-007 — Проекты с невалидным токеном",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "invalid-token", "type": "string"}]},
+            "method": "GET",
+            "header": [{"key": "Accept", "value": "application/json"}],
+            "url": "{{base_url}}/api-v2/projects",
+            "description": "Ожидается 401 и описание ошибки."
+          },
+          "event": [{
+            "listen": "test",
+            "script": {"type": "text/javascript", "exec": [
+              "pm.test('Status code is 401', () => pm.response.to.have.status(401));",
+              "pm.test('Response contains error', () => pm.expect(pm.response.json().error).to.exist);"
+            ]}
+          }]
+        }
+      ]
+    },
+    {
+      "name": "Служебное — удалить созданный ключ",
+      "request": {
+        "auth": {"type": "noauth"},
+        "method": "DELETE",
+        "header": [{"key": "Accept", "value": "application/json"}],
+        "url": "{{base_url}}/api-v2/auth/keys/{{created_key}}",
+        "description": "Выполните последним. Удаляет ключ, созданный API-002."
+      },
+      "event": [{
+        "listen": "test",
+        "script": {"type": "text/javascript", "exec": [
+          "pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+          "if (pm.response.code === 200) {",
+          "  pm.collectionVariables.unset('created_key');",
+          "  pm.collectionVariables.unset('token');",
+          "}"
+        ]}
+      }]
+    }
+  ]
+}

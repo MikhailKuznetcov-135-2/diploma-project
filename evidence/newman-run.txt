@@ -1,0 +1,64 @@
+newman
+
+YouGile REST API v2 — диплом
+
+❏ Позитивные
+↳ API-001 — Получить список компаний
+  POST https://yougile.com/api-v2/auth/companies [200 OK, 517B, 1496ms]
+  ✓  Status code is 200
+  ✓  Response has content and paging
+
+↳ API-002 — Создать API-ключ
+  POST https://yougile.com/api-v2/auth/keys [201 Created, 432B, 81ms]
+  ✓  Status code is 201
+  ✓  Response contains key
+
+↳ API-003 — Получить текущего пользователя
+  GET https://yougile.com/api-v2/users/me [200 OK, 537B, 137ms]
+  ✓  Status code is 200
+  ✓  Response contains user id
+
+↳ API-004 — Получить список проектов
+  GET https://yougile.com/api-v2/projects?limit=50&offset=0 [200 OK, 5.02kB, 44ms]
+  ✓  Status code is 200
+  ✓  Response has content and paging
+
+↳ API-005 — Получить список задач
+  GET https://yougile.com/api-v2/tasks?limit=50&offset=0 [200 OK, 15.75kB, 48ms]
+  ✓  Status code is 200
+  ✓  Response has content and paging
+
+❏ Негативные
+↳ API-006 — Текущий пользователь без токена
+  GET https://yougile.com/api-v2/users/me [401 Unauthorized, 396B, 32ms]
+  ✓  Status code is 401
+  ✓  Response contains error
+
+↳ API-007 — Проекты с невалидным токеном
+  GET https://yougile.com/api-v2/projects [401 Unauthorized, 396B, 30ms]
+  ✓  Status code is 401
+  ✓  Response contains error
+
+→ Служебное — удалить созданный ключ
+  DELETE https://yougile.com/api-v2/auth/keys/[redacted] [200 OK, 368B, 30ms]
+  ✓  Status code is 200
+
+┌─────────────────────────┬─────────────────────┬────────────────────┐
+│                         │            executed │             failed │
+├─────────────────────────┼─────────────────────┼────────────────────┤
+│              iterations │                   1 │                  0 │
+├─────────────────────────┼─────────────────────┼────────────────────┤
+│                requests │                   8 │                  0 │
+├─────────────────────────┼─────────────────────┼────────────────────┤
+│            test-scripts │                   8 │                  0 │
+├─────────────────────────┼─────────────────────┼────────────────────┤
+│      prerequest-scripts │                   0 │                  0 │
+├─────────────────────────┼─────────────────────┼────────────────────┤
+│              assertions │                  15 │                  0 │
+├─────────────────────────┴─────────────────────┴────────────────────┤
+│ total run duration: 2s                                             │
+├────────────────────────────────────────────────────────────────────┤
+│ total data received: 20.52kB (approx)                              │
+├────────────────────────────────────────────────────────────────────┤
+│ average response time: 237ms [min: 30ms, max: 1496ms, s.d.: 476ms] │
+└────────────────────────────────────────────────────────────────────┘

@@ -1,0 +1,1 @@
+[{"values":["macOS 26.6.2 (25G83)"],"name":"OS"},{"values":["3.12.14"],"name":"Python"},{"values":["1.55.0"],"name":"Playwright"},{"values":["Chromium"],"name":"Browser"},{"values":["https://ru.yougile.com"],"name":"WebBaseUrl"},{"values":["https://yougile.com"],"name":"ApiBaseUrl"}]

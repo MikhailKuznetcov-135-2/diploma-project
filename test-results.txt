@@ -1,0 +1,12 @@
+YOUGILE — ФАКТИЧЕСКИЕ РЕЗУЛЬТАТЫ, 03.10.2026
+
+Функциональные проверки: 7/7 PASSED
+API pytest: 7/7 PASSED, 2.97 с
+UI Chromium: 5/5 PASSED, 43.67 с
+UI Firefox: 5/5 PASSED, 50.54 с
+UI WebKit: 5/5 PASSED, 52.56 с
+Полный pytest: 12/12 PASSED, 48.59 с
+Newman: 8 запросов, 15/15 assertions PASSED, около 2 с
+Нефункциональные проверки: 10/12 PASSED, 2/12 FAILED
+Подтверждённые дефекты: 1 — YG-DIP-001, Minor, Medium
+
